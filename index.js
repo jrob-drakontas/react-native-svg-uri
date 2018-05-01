@@ -186,7 +186,7 @@ class SvgUri extends Component{
     case 'defs':
       return <Defs key={i}>{childs}</Defs>;
     case 'clipPath':
-      componentAtts = this.obtainComponentAtts(node, PATH_ATTS);
+      componentAtts = this.obtainComponentAtts(node, CLIP_PATH_ATTS);
       return <ClipPath key={i} {...componentAtts}>{childs}</ClipPath>;
     case 'linearGradient':
       componentAtts = this.obtainComponentAtts(node, LINEARG_ATTS);
