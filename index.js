@@ -30,6 +30,7 @@ const ACCEPTED_SVG_ELEMENTS = [
   'path',
   'rect',
   'defs',
+  'clipPath',
   'line',
   'linearGradient',
   'radialGradient',
