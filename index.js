@@ -18,6 +18,7 @@ import Svg,{
     Text,
     TSpan,
     Defs,
+    ClipPath,
     Stop
 } from 'react-native-svg';
 
@@ -45,7 +46,7 @@ const ACCEPTED_SVG_ELEMENTS = [
 // Attributes from SVG elements that are mapped directly.
 const SVG_ATTS = ['viewBox', 'width', 'height'];
 const G_ATTS = ['id'];
-
+cosnt CLIP_PATH_ATTS = ['id'];
 const CIRCLE_ATTS = ['cx', 'cy', 'r'];
 const PATH_ATTS = ['d'];
 const RECT_ATTS = ['width', 'height'];
@@ -184,6 +185,9 @@ class SvgUri extends Component{
       return <Line key={i} {...componentAtts}>{childs}</Line>;
     case 'defs':
       return <Defs key={i}>{childs}</Defs>;
+    case 'clipPath':
+      componentAtts = this.obtainComponentAtts(node, PATH_ATTS);
+      return <ClipPath key={i} {...componentAtts}>{childs}</ClipPath>;
     case 'linearGradient':
       componentAtts = this.obtainComponentAtts(node, LINEARG_ATTS);
       return <LinearGradient key={i} {...componentAtts}>{childs}</LinearGradient>;
