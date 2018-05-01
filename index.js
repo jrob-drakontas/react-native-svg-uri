@@ -46,7 +46,7 @@ const ACCEPTED_SVG_ELEMENTS = [
 // Attributes from SVG elements that are mapped directly.
 const SVG_ATTS = ['viewBox', 'width', 'height'];
 const G_ATTS = ['id'];
-cosnt CLIP_PATH_ATTS = ['id'];
+const CLIP_PATH_ATTS = ['id'];
 const CIRCLE_ATTS = ['cx', 'cy', 'r'];
 const PATH_ATTS = ['d'];
 const RECT_ATTS = ['width', 'height'];
