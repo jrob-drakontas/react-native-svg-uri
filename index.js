@@ -241,19 +241,19 @@ class SvgUri extends Component{
       .map(utils.removePixelsFromNodeValue)
       .filter(utils.getEnabledAttributes(enabledAttributes.concat(COMMON_ATTS)))
       .reduce((acc, {nodeName, nodeValue}) => {
-        acc[nodeName] = (this.state.fill && nodeName === 'fill' && nodeValue !== 'none') ? this.state.fill : nodeValue
+        if (this.state.fill && nodeName === 'fill' && nodeValue !== 'none') {
+          acc[nodeName] = this.state.fill
+        } else if (nodeName === 'strokeWidth') {
+          acc[nodeName] = Number(nodeValue) / StyleSheet.hairlineWidth      
+        } else if (nodeName === 'href') {
+          acc[nodeName] = { uri: nodeValue }
+        } else { 
+          acc[nodeName] = nodeValue
+        }
+        
         return acc
       }, {})
-      .reduce((acc, {nodeName, nodeValue}) => {
-        acc[nodeName] = (nodeName === 'stroke-width') ? Number(nodeValue) / StyleSheet.hairlineWidth : nodeValue
-        return acc
-      }, {})
-      .reduce((acc, {nodeName, nodeValue}) => {
-        acc[nodeName] = (nodeName === 'href')
-          ? { uri: nodeValue }
-          : nodeValue
-        return acc
-      }, {});
+     
     Object.assign(componentAtts, styleAtts);
 
     return componentAtts;
