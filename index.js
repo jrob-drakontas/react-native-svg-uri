@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types'
 import xmldom from 'xmldom';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
@@ -19,6 +19,7 @@ import Svg,{
     TSpan,
     Defs,
     ClipPath,
+    Image,
     Stop
 } from 'react-native-svg';
 
@@ -40,6 +41,7 @@ const ACCEPTED_SVG_ELEMENTS = [
   'polygon',
   'polyline',
   'text',
+  'image',
   'tspan'
 ];
 
@@ -55,6 +57,7 @@ const LINEARG_ATTS = LINE_ATTS.concat(['id', 'gradientUnits']);
 const RADIALG_ATTS = CIRCLE_ATTS.concat(['id', 'gradientUnits']);
 const STOP_ATTS = ['offset'];
 const ELLIPSE_ATTS = ['cx', 'cy', 'rx', 'ry'];
+const IMAGE_ATTS = ['href', 'height', 'width'];
 
 const TEXT_ATTS = ['fontFamily', 'fontSize', 'fontWeight', 'textAnchor']
 
@@ -174,6 +177,9 @@ class SvgUri extends Component{
     case 'path':
       componentAtts = this.obtainComponentAtts(node, PATH_ATTS);
       return <Path key={i} {...componentAtts}>{childs}</Path>;
+    case 'image':
+      componentAtts = this.obtainComponentAtts(node, IMAGE_ATTS);
+      return <Image key={i} {...componentAtts}>{childs}</Image>;
     case 'circle':
       componentAtts = this.obtainComponentAtts(node, CIRCLE_ATTS);
       return <Circle key={i} {...componentAtts}>{childs}</Circle>;
@@ -236,6 +242,16 @@ class SvgUri extends Component{
       .filter(utils.getEnabledAttributes(enabledAttributes.concat(COMMON_ATTS)))
       .reduce((acc, {nodeName, nodeValue}) => {
         acc[nodeName] = (this.state.fill && nodeName === 'fill' && nodeValue !== 'none') ? this.state.fill : nodeValue
+        return acc
+      }, {})
+      .reduce((acc, {nodeName, nodeValue}) => {
+        acc[nodeName] = (nodeName === 'stroke-width') ? Number(nodeValue) / StyleSheet.hairlineWidth : nodeValue
+        return acc
+      }, {})
+      .reduce((acc, {nodeName, nodeValue}) => {
+        acc[nodeName] = (nodeName === 'href')
+          ? { uri: nodeValue }
+          : nodeValue
         return acc
       }, {});
     Object.assign(componentAtts, styleAtts);
